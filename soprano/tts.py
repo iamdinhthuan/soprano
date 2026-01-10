@@ -22,9 +22,6 @@ class SopranoTTS:
         device: Device to run inference on ('cuda', 'cpu', 'mps')
         cache_size_mb: Cache size in MB for lmdeploy backend
         decoder_batch_size: Batch size for decoder
-    
-    Environment Variables:
-        SOPRANO_BACKEND: Override backend selection ('lmdeploy' or 'transformers')
     """
     def __init__(self,
             backend='auto',
