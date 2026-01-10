@@ -22,8 +22,8 @@ dependencies = [
   "huggingface_hub",
   "numpy",
   "scipy",
-  "torch",
-  "transformers",
+  "torch>=2.1.0",
+  "transformers>=4.51.0",
   "unidecode",
   "uvicorn",
   "inflect"
