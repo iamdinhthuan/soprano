@@ -45,6 +45,7 @@ def generate_speech(
     temperature: float,
     top_p: float,
     repetition_penalty: float,
+    chunk_size: int,
     streaming: bool,
 ):
     if not text.strip():
@@ -58,7 +59,7 @@ def generate_speech(
                 temperature=temperature,
                 top_p=top_p,
                 repetition_penalty=repetition_penalty,
-                chunk_size=1,
+                chunk_size=chunk_size,
             )
             yield None, "⏳ Streaming..."
 
@@ -153,6 +154,14 @@ and up to **2000x real-time generation**, all while being easy to deploy at **<1
                     step=0.1,
                     label="Repetition Penalty",
                 )
+                chunk_size = gr.Slider(
+                    minimum=1,
+                    maximum=10,
+                    value=1,
+                    step=1,
+                    precision=0,
+                    label="Chunk Size (Streaming only)",
+                )
             generate_btn = gr.Button("Generate Speech", variant="primary", size="lg")
         with gr.Column(scale=1):
             audio_output = gr.Audio(
@@ -178,7 +187,7 @@ and up to **2000x real-time generation**, all while being easy to deploy at **<1
     )
     generate_btn.click(
         fn=generate_speech,
-        inputs=[text_input, temperature, top_p, repetition_penalty, streaming],
+        inputs=[text_input, temperature, top_p, repetition_penalty, chunk_size, streaming],
         outputs=[audio_output, status_output],
     )
     gr.Markdown(
