@@ -15,10 +15,11 @@
 
 **Soprano** is an ultra‑lightweight, on-device text‑to‑speech (TTS) model designed for expressive, high‑fidelity speech synthesis at unprecedented speed. Soprano was designed with the following features:
 - Up to **2000x** real-time generation on GPU and **20x** real-time on CPU
-- **Streaming** support with **<15 ms** latency on GPU, **<250 ms** on CPU
-- Compact 80M parameter architecture allows **<1 GB** memory usage, facilitating on-device usage
-- Highly expressive, crystal clear **32kHz** audio generation
-- Widespread support on CUDA, CPU, and MPS devices on Windows, Linux, and Mac
+- **Lossless streaming** with **<15 ms** latency on GPU, **<250 ms** on CPU
+- **<1 GB** memory usage with a compact 80M parameter architecture
+- **Infinite generation length** with automatic text splitting
+- Highly expressive, crystal clear audio generation at **32kHz**
+- Widespread support for CUDA, CPU, and MPS devices on Windows, Linux, and Mac
 - Supports WebUI, CLI, and OpenAI-compatible endpoint for easy and production-ready inference
 
 https://github.com/user-attachments/assets/525cf529-e79e-4368-809f-6be620852826
@@ -64,7 +65,7 @@ pip install -e .
 
 > ### ⚠️ Warning: Windows CUDA users
 > 
-> On **Windows with CUDA**, `pip` will install a CPU-only PyTorch build. To ensure CUDA support works as expected, reinstall PyTorch explicitly with the correct CUDA wheel **after** installing Soprano:
+> On Windows with CUDA, `pip` will install a CPU-only PyTorch build. To ensure CUDA support works as expected, reinstall PyTorch explicitly with the correct CUDA wheel **after** installing Soprano:
 > 
 > ```bash
 > pip uninstall -y torch
@@ -93,13 +94,13 @@ soprano-webui # hosted on http://127.0.0.1:7860 by default
 soprano "Soprano is an extremely lightweight text to speech model."
 
 optional arguments:
---output, -o                    Output audio file path (non-streaming only). Defaults to 'output.wav'
---model-path, -m                Path to local model directory (optional)
---device, -d                    Device to use for inference. Supported: auto, cuda, cpu, mps. Defaults to 'auto'
---backend, -b                   Backend to use for inference. Supported: auto, transformers, lmdeploy. Defaults to 'auto'
---cache-size, -c                Cache size in MB (for lmdeploy backend). Defaults to 100
---decoder-batch-size, -bs       Decoder batch size. Defaults to 1
---streaming, -s                 Enable streaming playback to speakers
+  --output, -o                  Output audio file path (non-streaming only). Defaults to 'output.wav'
+  --model-path, -m              Path to local model directory (optional)
+  --device, -d                  Device to use for inference. Supported: auto, cuda, cpu, mps. Defaults to 'auto'
+  --backend, -b                 Backend to use for inference. Supported: auto, transformers, lmdeploy. Defaults to 'auto'
+  --cache-size, -c              Cache size in MB (for lmdeploy backend). Defaults to 100
+  --decoder-batch-size, -bs     Decoder batch size. Defaults to 1
+  --streaming, -s               Enable streaming playback to speakers
 ```
 > **Tip:** You can increase cache size and decoder batch size to increase inference speed at the cost of higher memory usage.
 
@@ -131,7 +132,7 @@ curl http://localhost:8000/v1/audio/speech \
 ```python
 from soprano import SopranoTTS
 
-model = SopranoTTS(backend='auto', device='cuda', cache_size_mb=100, decoder_batch_size=1)
+model = SopranoTTS(backend='auto', device='auto', cache_size_mb=100, decoder_batch_size=1)
 ```
 
 > **Tip:** You can increase cache_size_mb and decoder_batch_size to increase inference speed at the cost of higher memory usage.
